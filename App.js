@@ -4,28 +4,53 @@ import { AppLoading, Asset, Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import RootNavigation from './navigation/RootNavigation';
 
-import * as firebase from 'firebase';
-
-const firebaseConfig = {
-    apiKey: "AIzaSyCrRhfC6O-UvhKlQ47EP35PCRAO4lqp1qc",
-    authDomain: "cyrbsyde.firebaseapp.com",
-    databaseURL: "https://cyrbsyde.firebaseio.com",
-    projectId: "cyrbsyde",
-    storageBucket: "cyrbsyde.appspot.com",
-    messagingSenderId: "194804647786"
-};
-const firebaseApp = firebase.initializeApp(firebaseConfig);
+import firebase from 'firebase';
 
 export default class App extends React.Component {
-  state = {
+    constructor(props) {
+        super(props);
+
+        firebase.initializeApp({
+            apiKey: "AIzaSyCrRhfC6O-UvhKlQ47EP35PCRAO4lqp1qc",
+            authDomain: "cyrbsyde.firebaseapp.com",
+            databaseURL: "https://cyrbsyde.firebaseio.com",
+            projectId: "cyrbsyde",
+            storageBucket: "cyrbsyde.appspot.com",
+            messagingSenderId: "194804647786"
+        });
+        this.state = {
+            signedIn: firebase.auth().currentUser,
+            session: null
+        };
+    }
+
+    componentDidMount() {
+        const ctx = this;
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+                ctx.setState({signedIn: true});
+            } else {
+                ctx.setState({signedIn: false});
+            }
+        });
+    }
+
+    load(key) {
+        this.setState({ session: key });
+    }
+
+    exit() {
+        this.setState({ session: null });
+    }
+    state = {
     assetsAreLoaded: false,
-  };
+    };
 
-  componentWillMount() {
+    componentWillMount() {
     this._loadAssetsAsync();
-  }
+    }
 
-  render() {
+    render() {
     if (!this.state.assetsAreLoaded && !this.props.skipLoadingScreen) {
       return <AppLoading />;
     } else {
@@ -38,9 +63,9 @@ export default class App extends React.Component {
         </View>
       );
     }
-  }
+    }
 
-  async _loadAssetsAsync() {
+    async _loadAssetsAsync() {
     try {
       await Promise.all([
         Asset.loadAsync([
@@ -56,17 +81,17 @@ export default class App extends React.Component {
         ]),
       ]);
     } catch (e) {
-      // In this case, you might want to report the error to your error
-      // reporting service, for example Sentry
-      console.warn(
-        'There was an error caching assets (see: App.js), perhaps due to a ' +
-          'network timeout, so we skipped caching. Reload the app to try again.'
-      );
-      console.log(e);
-    } finally {
-      this.setState({ assetsAreLoaded: true });
+            // In this case, you might want to report the error to your error
+            // reporting service, for example Sentry
+            console.warn(
+                'There was an error caching assets (see: App.js), perhaps due to a ' +
+                'network timeout, so we skipped caching. Reload the app to try again.'
+            );
+            console.log(e);
+        } finally {
+            this.setState({ assetsAreLoaded: true });
+        }
     }
-  }
 }
 
 const styles = StyleSheet.create({

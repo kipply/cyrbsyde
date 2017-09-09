@@ -7,7 +7,6 @@ import Colors from '../constants/Colors';
 
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
-import LoginScreen from '../screens/LoginScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import MapScreen from '../screens/MapScreen';
 
@@ -25,9 +24,6 @@ export default TabNavigator(
     Maps: {
       screen: MapScreen,
     },
-    Login: {
-      screen: LoginScreen,
-    },
   },
   {
     navigationOptions: ({ navigation }) => ({
@@ -44,11 +40,6 @@ export default TabNavigator(
             iconName = Platform.OS === 'ios'
               ? `ios-link${focused ? '' : '-outline'}`
               : 'md-link';
-            break;
-          case 'Login':
-            iconName = Platform.OS === 'ios'
-              ? `ios-link${focused ? '' : '-outline'}`
-              : 'md-user';
             break;
           case 'Maps':
             iconName = Platform.OS === 'ios'

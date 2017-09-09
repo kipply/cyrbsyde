@@ -1,8 +1,9 @@
 import React from 'react';
 import { Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { WebBrowser } from 'expo';
-import { Navigator, NativeModules } from 'react-native';
+// import { Navigator, NativeModules } from 'react-native';
 import * as firebase from "firebase";
+import { FireAuth } from 'react-native-firebase-auth';
 
 import { COLOR, ThemeProvider, Button } from 'react-native-material-ui';
 
@@ -24,7 +25,18 @@ export default class LoginScreen extends React.Component {
     static navigationOptions = {
         header: null,
     };
-    handleClick = () => {
+    constructor(props){
+        super(props);
+
+        // FireAuth.init({iosClientId: "221641113575-hil4f3ph0sg3bj86inbnfbggmk5q6pdk.apps.googleusercontent.com"}); // This is the CLIENT_ID found in your Google services plist.
+    }
+
+    componentDidMount() {
+    //   FireAuth.setup(this.onLogin, this.onUserChange, this.onLogout, this.emailVerified, this.onError);
+    }
+        handleClick = () => {
+        // FireAuth.googleLogin();
+
         //   var provider = new firebase.auth.GoogleAuthProvider();
         //   firebase.auth().signInWithCredential(credentials)
         //       .then()

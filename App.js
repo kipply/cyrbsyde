@@ -7,10 +7,12 @@ import RootNavigation from './navigation/RootNavigation';
 import * as firebase from 'firebase';
 
 const firebaseConfig = {
-  apiKey: "<your-api-key>",
-  authDomain: "<your-auth-domain>",
-  databaseURL: "<your-database-url>",
-  storageBucket: "<your-storage-bucket>",,
+    apiKey: "AIzaSyCrRhfC6O-UvhKlQ47EP35PCRAO4lqp1qc",
+    authDomain: "cyrbsyde.firebaseapp.com",
+    databaseURL: "https://cyrbsyde.firebaseio.com",
+    projectId: "cyrbsyde",
+    storageBucket: "cyrbsyde.appspot.com",
+    messagingSenderId: "194804647786"
 };
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 

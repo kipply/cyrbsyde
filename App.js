@@ -4,6 +4,16 @@ import { AppLoading, Asset, Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import RootNavigation from './navigation/RootNavigation';
 
+import * as firebase from 'firebase';
+
+const firebaseConfig = {
+  apiKey: "<your-api-key>",
+  authDomain: "<your-auth-domain>",
+  databaseURL: "<your-database-url>",
+  storageBucket: "<your-storage-bucket>",,
+};
+const firebaseApp = firebase.initializeApp(firebaseConfig);
+
 export default class App extends React.Component {
   state = {
     assetsAreLoaded: false,

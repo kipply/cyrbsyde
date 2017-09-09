@@ -24,6 +24,9 @@ export default class App extends React.Component {
                 longitude: 0
             }
         },
+        text: {
+          'test'
+        }
     };
 
     componentWillMount() {
@@ -71,12 +74,15 @@ export default class App extends React.Component {
                         <TextInput
                           editable = {true}
                           maxLength = {75}
+                          placeholder="tester"
+                          onChangeText={(text) => this.setState({text})}
                         />
                     </Card.Body>
                     <Card.Actions position="bottom">
-                    <Button text="Take me there!">
-                        <Text>Take me there!</Text>
-                    </Button>
+                      <Button
+                        onPress={() => { Alert.alert('You tapped the button!')}}
+                        title="Press Me"
+                      />
                     </Card.Actions>
                 </Card>
             </MapView>

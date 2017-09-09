@@ -6,6 +6,9 @@ import {
     Permissions,
     MapView
 } from 'expo';
+import { View, StyleSheet } from 'react-native';
+import { Container, Button, Text, Header, Content, Form, Item, Input, H1, Card } from 'native-base';
+
 
 const GEOLOCATION_OPTIONS = {
     enableHighAccuracy: true,
@@ -56,24 +59,34 @@ export default class App extends React.Component {
             })
     }
     render() {
-        return ( <
-            MapView style = {
-                {
-                    flex: 1
-                }
-            }
-            initialRegion = {
-                {
-                    latitude: 37.78825,
-                    longitude: -122.4324,
-                    latitudeDelta: 0.0922,
-                    longitudeDelta: 0.0421,
-                }
-            }
-            showsUserLocation = {
-                true
-            }
-            />
+        return (
+            <MapView style = {{flex: 1}}
+                region={this.state.region}
+                onRegionChange={this.onRegionChange}
+                showsUserLocation = {
+                    true
+                }>
+                <Container>
+
+                    <Form style={styles.search}>
+                        <Item>
+                            <Input placeholder="Destination" />
+                        </Item>
+                    </Form>
+                </Container>
+
+            </MapView>
         );
     }
 }
+
+
+const styles = StyleSheet.create({
+    search: {
+
+    },
+    title: {
+        backgroundColor: '#FFFFFF',
+        paddingLeft: 10,
+    }
+});

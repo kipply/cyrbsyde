@@ -6,8 +6,8 @@ import {
     Permissions,
     MapView
 } from 'expo';
-import { View, StyleSheet } from 'react-native';
-import { Container, Button, Text, Header, Content, Form, Item, Input, H1, Card } from 'native-base';
+import { View, StyleSheet, Text, Image, TextInput } from 'react-native';
+import { Card, Button } from 'react-native-material-design';
 
 
 const GEOLOCATION_OPTIONS = {
@@ -66,15 +66,19 @@ export default class App extends React.Component {
                 showsUserLocation = {
                     true
                 }>
-                <Container>
-
-                    <Form style={styles.search}>
-                        <Item>
-                            <Input placeholder="Destination" />
-                        </Item>
-                    </Form>
-                </Container>
-
+                <Card>
+                    <Card.Body>
+                        <TextInput
+                          editable = {true}
+                          maxLength = {75}
+                        />
+                    </Card.Body>
+                    <Card.Actions position="bottom">
+                    <Button text="Take me there!">
+                        <Text>Take me there!</Text>
+                    </Button>
+                    </Card.Actions>
+                </Card>
             </MapView>
         );
     }
@@ -83,7 +87,7 @@ export default class App extends React.Component {
 
 const styles = StyleSheet.create({
     search: {
-
+        // height: 1,
     },
     title: {
         backgroundColor: '#FFFFFF',

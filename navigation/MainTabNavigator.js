@@ -7,7 +7,11 @@ import Colors from '../constants/Colors';
 
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
+<<<<<<< HEAD
 import MapScreen from '../screens/MapScreen';
+=======
+import LoginScreen from '../screens/LoginScreen';
+>>>>>>> 18d4cbc2f8bd1cac8e50f9547577e9cbf98c980f
 import SettingsScreen from '../screens/SettingsScreen';
 
 export default TabNavigator(
@@ -23,6 +27,9 @@ export default TabNavigator(
     },
     Settings: {
       screen: SettingsScreen,
+    },
+    Login: {
+      screen: LoginScreen,
     },
   },
   {
@@ -40,10 +47,19 @@ export default TabNavigator(
             iconName = Platform.OS === 'ios'
               ? `ios-link${focused ? '' : '-outline'}`
               : 'md-link';
+<<<<<<< HEAD
           case 'Map':
             iconName = Platform.OS === 'ios'
               ? `ios-information-circle${focused ? '' : '-outline'}`
               : 'md-information-circle';
+=======
+            break;
+          case 'Login':
+            iconName = Platform.OS === 'ios'
+              ? `ios-link${focused ? '' : '-outline'}`
+              : 'md-user';
+            break;
+>>>>>>> 18d4cbc2f8bd1cac8e50f9547577e9cbf98c980f
           case 'Settings':
             iconName = Platform.OS === 'ios'
               ? `ios-options${focused ? '' : '-outline'}`

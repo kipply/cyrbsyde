@@ -1,0 +1,23 @@
+from lyft hq (37.7763, -122.3918):
+- lyft premier: $33.19
+- lyft line: $5.74
+- lyft lux: $44.34
+- lyft: $15.11
+- lyft plus: $22.64
+- lyft lux suv: $57.02
+
+from across the street lyft hq (37.7768, -122.3923):
+- lyft premier: $36.23
+- lyft line: $5.95
+- lyft lux: $43.57
+- lyft: $14.88
+- lyft plus: $22.21
+- lyft lux suv: $56.30
+
+around the corner on 4th & berry (37.7758, -122.3931):
+- lyft premier: $32.97
+- lyft line: $5.85
+- lyft lux: $44.03
+- lyft: $15.01
+- lyft plus: $22.47
+- lyft lux suv: $56.71

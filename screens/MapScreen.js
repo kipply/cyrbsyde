@@ -24,9 +24,7 @@ export default class App extends React.Component {
                 longitude: 0
             }
         },
-        text: {
-          'test'
-        }
+        text : 'test'
     };
 
     componentWillMount() {
@@ -69,23 +67,19 @@ export default class App extends React.Component {
                 showsUserLocation = {
                     true
                 }>
-                <Card>
-                    <Card.Body>
-                        <TextInput
-                          editable = {true}
-                          maxLength = {75}
-                          placeholder="tester"
-                          onChangeText={(text) => this.setState({text})}
-                        />
-                    </Card.Body>
-                    <Card.Actions position="bottom">
-                      <Button
-                        onPress={() => { Alert.alert('You tapped the button!')}}
-                        title="Press Me"
-                      />
-                    </Card.Actions>
-                </Card>
-            </MapView>
+                <TextInput
+                  style={{height: 40}}
+                  placeholder="Type here to translate!"
+                  onChangeText={(text) => this.setState({text})}
+                />
+                <Text style={{padding: 10, fontSize: 42}}>
+                  //{this.state.text.split(' ').map((word) => word && 'test').join(' ')}
+                </Text>
+                // <Button
+                //   onPress={() => { Alert.alert('You tapped the button!')}}
+                //   title="Press Me"
+                // />
+          </MapView>
         );
     }
 }

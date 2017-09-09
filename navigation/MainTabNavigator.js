@@ -44,7 +44,7 @@ export default TabNavigator(
           case 'Maps':
             iconName = Platform.OS === 'ios'
               ? `ios-link${focused ? '' : '-outline'}`
-              : 'md-user';
+              : 'md-link';
             break;
           case 'Settings':
             iconName = Platform.OS === 'ios'

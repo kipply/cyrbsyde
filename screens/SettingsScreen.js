@@ -1,14 +1,75 @@
 import React from 'react';
-import { ExpoConfigView } from '@expo/samples';
+import { WebBrowser } from 'expo';
+import { View, StyleSheet, Text, Image, TextInput, Button } from 'react-native';
 
-export default class SettingsScreen extends React.Component {
+import { MonoText } from '../components/StyledText';
+import firebase from 'firebase';
+import Login from "../components/login";
+import Register from "../components/register";
+
+
+export default class HomeScreen extends React.Component {
   static navigationOptions = {
-    title: 'app.json',
+    title: 'Settings',
   };
-
-  render() {
-    /* Go ahead and delete ExpoConfigView and replace it with your
-     * content, we just wanted to give you a quick view of your config */
-    return <ExpoConfigView />;
+  constructor(props){
+      super(props);
+      this.state = {
+          signedIn: firebase.auth().currentUser,
+          isLoginScreen : true,
+      };
   }
+  showLogin(){
+      this.setState({isLoginScreen: true})
+  }
+  showRegister(){
+      this.setState({isLoginScreen: false})
+  }
+  render() {
+    if (!this.state.signedIn){
+        return (
+          <View style={styles.container}>
+                {this.state.isLoginScreen ? <Login/> : <Register/>}
+
+                <View style={styles.inline}>
+                <Button
+                  onPress={() => this.showLogin()}
+                  title="Login"
+                  color="blue"
+                />
+                <Button
+                  onPress={() => this.showRegister()}
+                  title="Register"
+                  color="green"
+                />
+                </View>
+          </View>
+        );
+    } else {
+        return(
+        <View style={styles.container}>
+          <Text style={styles.title}>You logged</Text>
+        </View>
+        )
+    }
+  }
+
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    padding: 10,
+    alignItems: 'center',
+  },
+  title: {
+      fontSize: 25,
+  },
+  inline: {
+      flexWrap: 'wrap',
+      alignItems: 'flex-start',
+      flexDirection:'row',
+    }
+
+});

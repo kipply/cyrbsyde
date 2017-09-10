@@ -8,6 +8,7 @@ import {
 } from 'expo';
 import { View, StyleSheet, Text, Image, TextInput } from 'react-native';
 import { Card, Button } from 'react-native-material-design';
+import LocationOptions from "../components/locationOptions";
 
 
 const GEOLOCATION_OPTIONS = {
@@ -17,20 +18,30 @@ const GEOLOCATION_OPTIONS = {
 };
 
 export default class App extends React.Component {
-    state = {
-        location: {
-            coords: {
-                latitude: 0,
-                longitude: 0
-            }
-        },
-        text : 'test'
+    static navigationOptions = {
+      title: 'Map',
     };
+    constructor(props){
+        super(props);
+        this.state = {
+            location: {
+                coords: {
+                    latitude: 0,
+                    longitude: 0
+                }
+            },
+            destination : ''
+        };
+    }
 
     componentWillMount() {
         this.getLocationAsync();
         Expo.Location.watchPositionAsync(GEOLOCATION_OPTIONS, this.locationChanged);
     }
+
+      updateDestination(destination){
+          this.setState({destination});
+      }
     async getLocationAsync() {
         const {
             Location,
@@ -61,36 +72,53 @@ export default class App extends React.Component {
     }
     render() {
         return (
-            <MapView style = {{flex: 1}}
+            <View style={styles.container}>
+            <MapView style = {styles.map}
                 region={this.state.region}
                 onRegionChange={this.onRegionChange}
-                showsUserLocation = {
-                    true
-                }>
+                showsUserLocation = {true}>
+
+            </MapView>
+            <View style={styles.top}>
+                <Text style={styles.title}>{this.state.title}</Text>
                 <TextInput
-                  style={{height: 40}}
-                  placeholder="Type here to translate!"
-                  onChangeText={(text) => this.setState({text})}
+                  style={{height: 40, backgroundColor: '#fff', padding: 5}}
+                  placeholder="Type in your destination!"
+                  onChangeText={(text) => this.updateDestination(text)}
                 />
-                <Text style={{padding: 10, fontSize: 42}}>
-                  //{this.state.text.split(' ').map((word) => word && 'test').join(' ')}
-                </Text>
-                // <Button
-                //   onPress={() => { Alert.alert('You tapped the button!')}}
-                //   title="Press Me"
-                // />
-          </MapView>
+                <LocationOptions content={this.state.destination} longitude={this.state.location.coords.longitude} latitude={this.state.location.coords.latitude}/>
+            </View>
+            </View>
         );
     }
 }
 
 
 const styles = StyleSheet.create({
-    search: {
-        // height: 1,
-    },
+    container: {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  justifyContent: 'flex-end',
+  alignItems: 'center',
+},
+map: {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+},
     title: {
         backgroundColor: '#FFFFFF',
         paddingLeft: 10,
+    },
+    top: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0
     }
 });

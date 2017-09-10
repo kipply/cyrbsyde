@@ -38,6 +38,7 @@ export default class App extends React.Component {
                 long: 0
             },
             methods: [],
+            best_method: null,
             modalVisible: false
         };
     }
@@ -110,9 +111,20 @@ export default class App extends React.Component {
               var data = JSON.parse(result.text)
               if (data){
                   this.state.methods = data;
+                  console.log(this.state.methods)
               }
-              this.setState({methods: data})
           });
+          var min = this.state.methods[0]
+          for(var i = 1; i < this.state.methods.length;  i++){
+              if (this.state.methods[i].lyft_data.display_name == "The requested location is not inside a Lyft service area"){
+                  this.state.methods.pop(i)
+                  continue;
+              }
+              if ((this.state.methods[i].lyft_data.cost_max + this.state.methods[i].lyft_data.cost_min) / 2 < min){
+                  min = this.state.methods[i]
+              }
+          }
+          this.state.best_method = min
       };
   search(e, destination, lat, long){
         this.getData(destination, lat, long);
@@ -161,7 +173,7 @@ export default class App extends React.Component {
                       onChangeText={(text) => this.updateDestination(text)}
                       value={this.state.destination}
                     />
-                    <View>
+                    <View >
                     <FlatList
                       data={this.state.suggestions}
                       renderItem={({item}) => <Text style={styles.item} onPress={(text) => this.select(item)}>{ item.address }</Text>}
@@ -183,14 +195,18 @@ export default class App extends React.Component {
                   >
                  <View style={{marginTop: 22}}>
                   <View>
-                    <Text>Hello World!</Text>
-
-                    <TouchableHighlight onPress={() => {
+                    <Text style={styles.title}>Best Routes</Text>
+                    <Text>
+                        {JSON.stringify(this.state.methods)}
+                    </Text>
+                    <Button
+                    onPress={() => {
                       this.setModalVisible(!this.state.modalVisible)
-                    }}>
-                      <Text>Hide Modal</Text>
-                    </TouchableHighlight>
-
+                    }}
+                      title="Hide"
+                      color="#841584"
+                      text="Hide"
+                      />
                   </View>
                  </View>
                 </Modal>
@@ -239,7 +255,9 @@ map: {
 },
     title: {
         backgroundColor: '#FFFFFF',
-        paddingLeft: 10,
+        padding: 10,
+        textAlign: 'center',
+        fontSize: 25
     },
     top: {
         position: 'absolute',

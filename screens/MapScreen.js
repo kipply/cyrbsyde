@@ -85,8 +85,8 @@ export default class App extends React.Component {
         region = {
                 latitude: location.coords.latitude,
                 longitude: location.coords.longitude,
-                latitudeDelta: 0.1,
-                longitudeDelta: 0.05,
+                latitudeDelta: 0.01,
+                longitudeDelta: 0.01,
             },
             this.setState({
                 location,
@@ -107,7 +107,7 @@ export default class App extends React.Component {
                     <Text style={styles.title}>{this.state.title}</Text>
                     <TextInput
                       style={{height: 40, backgroundColor: '#fff', padding: 5}}
-                      placeholder="Type in your destination!"
+                      placeholder="Where are you headed?"
                       onChangeText={(text) => this.updateDestination(text)}
                       value={this.state.destination}
                     />
@@ -139,7 +139,7 @@ export default class App extends React.Component {
                 <Text style={styles.title}>{this.state.title}</Text>
                 <TextInput
                   style={{height: 40, backgroundColor: '#fff', padding: 5}}
-                  placeholder="Type in your destination!"
+                  placeholder="Where are you headed?"
                   onChangeText={(text) => this.updateDestination(text)}
                   value={this.state.destination}
                 />

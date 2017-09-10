@@ -9,7 +9,6 @@ class LocationOptions extends Component {
 		suggestions: [{}, {}, {}],
 	};
     }
-    // http://127.0.0.1:5000/api/getSearchSuggestions?userLocation=39.9483068,-75.1953933&query=Towne
 
     getAutocomplete(text, latitude, longitude, callback) {
       request.get("http://ec2-35-182-16-224.ca-central-1.compute.amazonaws.com/api/getSearchResults?userLocation=" + latitude + "," + longitude + "&query=" + text).end(callback);
@@ -26,23 +25,28 @@ class LocationOptions extends Component {
       });
  };
   search(e, props){
-		this.getData(props.content, props.latitude, props.longitude);
+		this.getData(props.content.value, props.latitude, props.longitude);
+  }
+
+  select(e, item){
+      this.state.content = item.address
+      console.log(item);
   }
   render() {
-    if (this.props.content){
+    if (this.props.content.value){
     return (
         <View>
         <FlatList
           data={this.state.suggestions}
-          renderItem={({item}) => <Text>{ item.address }</Text>}
+          renderItem={({item}) => <Text style={styles.item} onPress={(e) => this.select(e, item)}>{ item.address }</Text>}
            style={styles.select}
         />
-                  <Button
-                  onPress={(e) => this.search(e, this.props)}
-                      title="Search"
-                      color="#841584"
-                    />
-                    </View>
+        <Button
+        onPress={(e) => this.search(e, this.props)}
+          title="Search"
+          color="#841584"
+        />
+        </View>
     );}
     else{
         return(null)
@@ -55,6 +59,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFFFFF',
         padding: 10,
     },
+    item: {
+        borderWidth: 1,
+        borderColor: '#d6d7da',
+    }
 });
 
 export default LocationOptions;

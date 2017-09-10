@@ -6,9 +6,9 @@ import {
     Permissions,
     MapView
 } from 'expo';
-import { View, StyleSheet, Text, Image, TextInput } from 'react-native';
-import { Card, Button } from 'react-native-material-design';
+import { View, StyleSheet, Text, Image, TextInput, FlatList, Button } from 'react-native';
 import LocationOptions from "../components/locationOptions";
+import request from "superagent";
 
 
 const GEOLOCATION_OPTIONS = {
@@ -20,6 +20,7 @@ const GEOLOCATION_OPTIONS = {
 export default class App extends React.Component {
     static navigationOptions = {
       title: 'Map',
+      suggestions: [{}, {}, {}],
     };
     constructor(props){
         super(props);
@@ -58,6 +59,27 @@ export default class App extends React.Component {
             throw new Error('Location permission not granted');
         }
     }
+    getAutocomplete(text, latitude, longitude, callback) {
+      request.get("http://ec2-35-182-16-224.ca-central-1.compute.amazonaws.com/api/getSearchResults?userLocation=" + latitude + "," + longitude + "&query=" + text).end(callback);
+    }
+
+    getData(text, latitude, longitude){
+      console.log("About to make call");
+      this.getAutocomplete(text, latitude, longitude, (err, result) => {
+          data = JSON.parse(result.text)
+       if (data){
+           this.state.suggestions = data;
+       }
+       this.setState({suggestions: data})
+      });
+ };
+  search(e, destination, lat, long){
+        this.getData(destination, lat, long);
+  }
+
+  select(e, item){
+      updateDestination(item.address); 
+  }
     locationChanged = (location) => {
         region = {
                 latitude: location.coords.latitude,
@@ -86,7 +108,19 @@ export default class App extends React.Component {
                   placeholder="Type in your destination!"
                   onChangeText={(text) => this.updateDestination(text)}
                 />
-                <LocationOptions content={this.state.destination} longitude={this.state.location.coords.longitude} latitude={this.state.location.coords.latitude}/>
+                <View>
+                <FlatList
+                  data={this.state.suggestions}
+                  renderItem={({item}) => <Text style={styles.item} onPress={(e) => this.select(e, item)}>{ item.address }</Text>}
+                   style={styles.select}
+                />
+                <Button
+                onPress={(e) => this.search(e, this.state.destination, this.state.location.coords.latitude,  this.state.location.coords.longitude)}
+                  title="Search"
+                  color="#841584"
+                  text="Search"
+                  />
+                </View>
             </View>
             </View>
         );
@@ -120,5 +154,13 @@ map: {
         top: 0,
         left: 0,
         right: 0
+    },
+    select: {
+        backgroundColor: '#FFFFFF',
+        padding: 10,
+    },
+    item: {
+        borderWidth: 1,
+        borderColor: '#d6d7da',
     }
 });

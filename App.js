@@ -13,8 +13,6 @@ export default class App extends React.Component {
 
         var config = require('./config.json');
 
-        console.log(config.FIREBASE_API_KEY);
-
         firebase.initializeApp({
             apiKey: config.FIREBASE_API_KEY,
             authDomain: config.FIREBASE_AUTH_DOMAIN,

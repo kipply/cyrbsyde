@@ -24,14 +24,14 @@ export default class App extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            suggestions: [{}, {}, {}],
+            suggestions: [],
             location: {
                 coords: {
                     latitude: 0,
                     longitude: 0
                 }
             },
-            destination : ''
+            destination : '',
             dest: {
                 lat: 0,
                 long: 0
@@ -94,7 +94,40 @@ export default class App extends React.Component {
             })
     }
     render() {
-        return (
+        if (this.state.suggestions){
+            return (
+                <View style={styles.container}>
+                <MapView style = {styles.map}
+                    region={this.state.region}
+                    onRegionChange={this.onRegionChange}
+                    showsUserLocation = {true}>
+
+                </MapView>
+                <View style={styles.top}>
+                    <Text style={styles.title}>{this.state.title}</Text>
+                    <TextInput
+                      style={{height: 40, backgroundColor: '#fff', padding: 5}}
+                      placeholder="Type in your destination!"
+                      onChangeText={(text) => this.updateDestination(text)}
+                      value={this.state.destination}
+                    />
+                    <View>
+                    <FlatList
+                      data={this.state.suggestions}
+                      renderItem={({item}) => <Text style={styles.item} onPress={(text) => this.updateDestination(item.address)}>{ item.address }</Text>}
+                       style={styles.select}
+                    />
+                    <Button
+                    onPress={(e) => this.search(e, this.state.destination, this.state.location.coords.latitude,  this.state.location.coords.longitude)}
+                      title="Search"
+                      color="#841584"
+                      text="Search"
+                      />
+                    </View>
+                </View>
+                </View>
+            );
+        } else{
             <View style={styles.container}>
             <MapView style = {styles.map}
                 region={this.state.region}
@@ -110,22 +143,9 @@ export default class App extends React.Component {
                   onChangeText={(text) => this.updateDestination(text)}
                   value={this.state.destination}
                 />
-                <View>
-                <FlatList
-                  data={this.state.suggestions}
-                  renderItem={({item}) => <Text style={styles.item} onPress={(text) => this.updateDestination(item.address)}>{ item.address }</Text>}
-                   style={styles.select}
-                />
-                <Button
-                onPress={(e) => this.search(e, this.state.destination, this.state.location.coords.latitude,  this.state.location.coords.longitude)}
-                  title="Search"
-                  color="#841584"
-                  text="Search"
-                  />
-                </View>
             </View>
             </View>
-        );
+        }
     }
 }
 

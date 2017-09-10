@@ -38,7 +38,9 @@ export default class App extends React.Component {
                 long: 0
             },
             methods: [],
-            best_method: null,
+            best_method: {
+
+            },
             modalVisible: false
         };
     }
@@ -197,7 +199,8 @@ export default class App extends React.Component {
                   <View>
                     <Text style={styles.title}>Best Route</Text>
                     <Text>
-                        Walking Time: {this.state.best_method.walking}
+                    {JSON.stringify(this.state.best_method)}
+                        Walking Time: {this.state.best_method}
                     </Text>
                     <Button
                     onPress={() => {

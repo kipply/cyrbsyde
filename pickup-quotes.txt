@@ -1,23 +1,83 @@
 from lyft hq (37.7763, -122.3918):
-- lyft premier: $33.19
-- lyft line: $5.74
-- lyft lux: $44.34
-- lyft: $15.11
-- lyft plus: $22.64
-- lyft lux suv: $57.02
+- lyft premier: $35.57
+- lyft line: $8.07
+- lyft lux: $47.44
+- lyft: $16.15
+- lyft plus: $24.08
+- lyft lux suv: $61.25
 
 from across the street lyft hq (37.7768, -122.3923):
-- lyft premier: $36.23
-- lyft line: $5.95
-- lyft lux: $43.57
-- lyft: $14.88
-- lyft plus: $22.21
-- lyft lux suv: $56.30
+- lyft premier: $35.47
+- lyft line: $8.06
+- lyft lux: $47.27
+- lyft: $16.12
+- lyft plus: $23.95
+- lyft lux suv: $61.31
 
-around the corner on 4th & berry (37.7758, -122.3931):
-- lyft premier: $32.97
-- lyft line: $5.85
-- lyft lux: $44.03
-- lyft: $15.01
-- lyft plus: $22.47
-- lyft lux suv: $56.71
+middle of berry street:
+- lyft premier: $35.56
+- lyft line: $8.08
+- lyft lux: $47.40
+- lyft: $16.16
+- lyft plus: $24.01
+- lyft lux suv: $61.44
+
+northeast result for berry street:
+- lyft premier: $36.47
+- lyft line: $8.28
+- lyft lux: $48.60
+- lyft: $16.55
+- lyft plus: $24.62
+- lyft lux suv: $62.86
+
+southwest result for berry street:
+- lyft premier: $35.44
+- lyft line: $7.89
+- lyft lux: $47.25
+- lyft: $16.10
+- lyft plus: $23.97
+- lyft lux suv: $61.11
+
+
+
+== OLD LYFT HQ ==
+
+from old lyft hq in portero hill (37.750905, -122.402554):
+- lyft premier: $37.63
+- lyft line: $8.17
+- lyft lux: $50.21
+- lyft: $17.02
+- lyft plus: $25.50
+- lyft lux suv: $64.30
+
+across the street from old lyft hq:
+- lyft premier: $38.38
+- lyft line: $8.33
+- lyft lux: $51.21
+- lyft: $17.35
+- lyft plus: $26.01
+- lyft lux suv: $65.48
+
+other side of the complex:
+- lyft premier: $38.24
+- lyft line: $8.30
+- lyft lux: $51.03
+- lyft: $17.29
+- lyft plus: $25.92
+- lyft lux suv: $65.24
+
+northeast:
+- lyft premier: $38.46
+- lyft line: $8.34
+- lyft lux: $51.33
+- lyft: $17.38
+- lyft plus: $26.08
+- lyft lux suv: $65.56
+
+southwest:
+- lyft premier: $39.83
+- lyft line: $8.45
+- lyft lux: $53.11
+- lyft: $17.98
+- lyft plus: $26.89
+- lyft lux suv: $68.03

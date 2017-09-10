@@ -20,11 +20,11 @@ const GEOLOCATION_OPTIONS = {
 export default class App extends React.Component {
     static navigationOptions = {
       title: 'Map',
-      suggestions: [{}, {}, {}],
     };
     constructor(props){
         super(props);
         this.state = {
+            suggestions: [{}, {}, {}],
             location: {
                 coords: {
                     latitude: 0,
@@ -32,6 +32,10 @@ export default class App extends React.Component {
                 }
             },
             destination : ''
+            dest: {
+                lat: 0,
+                long: 0
+            }
         };
     }
 
@@ -41,7 +45,7 @@ export default class App extends React.Component {
     }
 
       updateDestination(destination){
-          this.setState({destination});
+          this.setState({destination: destination});
       }
     async getLocationAsync() {
         const {
@@ -77,9 +81,6 @@ export default class App extends React.Component {
         this.getData(destination, lat, long);
   }
 
-  select(e, item){
-      updateDestination(item.address); 
-  }
     locationChanged = (location) => {
         region = {
                 latitude: location.coords.latitude,
@@ -107,11 +108,12 @@ export default class App extends React.Component {
                   style={{height: 40, backgroundColor: '#fff', padding: 5}}
                   placeholder="Type in your destination!"
                   onChangeText={(text) => this.updateDestination(text)}
+                  value={this.state.destination}
                 />
                 <View>
                 <FlatList
                   data={this.state.suggestions}
-                  renderItem={({item}) => <Text style={styles.item} onPress={(e) => this.select(e, item)}>{ item.address }</Text>}
+                  renderItem={({item}) => <Text style={styles.item} onPress={(text) => this.updateDestination(item.address)}>{ item.address }</Text>}
                    style={styles.select}
                 />
                 <Button

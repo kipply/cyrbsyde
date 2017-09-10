@@ -12,7 +12,7 @@ class Register extends Component {
             formCompleted : false,
     	};
     }
-    firebaseRegister(e, email, password, password2){
+    firebaseRegister(e, email, password, password2, nav){
 
       firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
       var errorCode = error.code;
@@ -26,7 +26,7 @@ class Register extends Component {
           { cancelable: false }
         )
     });
-
+    nav.screenProps.navigation.navigate('Settings');
 };
     password(password2){
         if (this.state.password != this.state.password2){
@@ -37,6 +37,7 @@ class Register extends Component {
         this.setState({password2})
     }
   render() {
+
     return (
         <View>
             <Text style={styles.title}>Register</Text>
@@ -64,7 +65,7 @@ class Register extends Component {
             value={this.state.password2}
           />
               <Button
-                  onPress={(e) => this.firebaseRegister(e, this.state.email, this.state.password, this.state.password2)}
+                  onPress={(e) => this.firebaseRegister(e, this.state.email, this.state.password, this.state.password2, this.props)}
                   title="Let's Go!"
                   color="#841584"
                 />

@@ -25,11 +25,11 @@ export default class HomeScreen extends React.Component {
   showRegister(){
       this.setState({isLoginScreen: false})
   }
-  render() {
-    if (!this.state.signedIn){
+  render()  {
+    if (!firebase.auth().currentUser){
         return (
           <View style={styles.container}>
-                {this.state.isLoginScreen ? <Login/> : <Register/>}
+                {this.state.isLoginScreen ? <Login screenProps={{ navigation: this.props.navigation }} /> : <Register screenProps={{ navigation: this.props.navigation }} />}
 
                 <View style={styles.inline}>
                 <Button
@@ -48,7 +48,7 @@ export default class HomeScreen extends React.Component {
     } else {
         return(
         <View style={styles.container}>
-          <Text style={styles.title}>You logged</Text>
+          <Text style={styles.title}>{firebase.auth().currentUser.email}</Text>
         </View>
         )
     }

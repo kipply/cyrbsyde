@@ -21,14 +21,15 @@ class Login extends Component {
 		this.getData(this.props.content);
 	}
   }
-  firebaseLogin(e, email, password){
-
+  firebaseLogin(e, email, password, nav){
+      console.log(firebase.auth().currentUser);
           firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
         console.log(errorMessage);
         });
+        nav.screenProps.navigation.navigate('Settings');
     }
   render() {
     return (
@@ -52,7 +53,7 @@ class Login extends Component {
           />
 
               <Button
-                  onPress={(e) => this.firebaseLogin(e, this.state.email, this.state.password)}
+                  onPress={(e) => this.firebaseLogin(e, this.state.email, this.state.password, this.props)}
                   title="Let's Go!"
                   color="#841584"
                 />

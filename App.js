@@ -7,16 +7,21 @@ import RootNavigation from './navigation/RootNavigation';
 import firebase from 'firebase';
 
 export default class App extends React.Component {
+
     constructor(props) {
         super(props);
 
+        var config = require('./config.json');
+
+        console.log(config.FIREBASE_API_KEY);
+
         firebase.initializeApp({
-            apiKey: "AIzaSyCrRhfC6O-UvhKlQ47EP35PCRAO4lqp1qc",
-            authDomain: "cyrbsyde.firebaseapp.com",
-            databaseURL: "https://cyrbsyde.firebaseio.com",
-            projectId: "cyrbsyde",
-            storageBucket: "cyrbsyde.appspot.com",
-            messagingSenderId: "194804647786"
+            apiKey: config.FIREBASE_API_KEY,
+            authDomain: config.FIREBASE_AUTH_DOMAIN,
+            databaseURL: config.FIREBASE_DB_URL,
+            projectId: config.FIREBASE_PROJ_ID,
+            storageBucket: config.FIREBASE_STORAGE_BUCKET,
+            messagingSenderId: config.FIREBASE_MESSENGER_SENDING_ID
         });
         this.state = {
             signedIn: firebase.auth().currentUser,

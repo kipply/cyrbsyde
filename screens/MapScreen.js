@@ -35,7 +35,8 @@ export default class App extends React.Component {
             destination : '',
             dest: {
                 lat: 0,
-                long: 0
+                long: 0,
+                name: ""
             },
             methods: [],
             best_method: {
@@ -135,6 +136,7 @@ export default class App extends React.Component {
       this.updateDestination(item.address);
       this.state.dest.lat = item.coords.lat;
       this.state.dest.long = item.coords.lng;
+      this.state.dest.name = item.name;
       this.getDirections(this.state.location.coords.latitude, this.state.location.coords.longitude, this.state.dest.lat ,this.state.dest.long)
       this.setModalVisible(true);
   }
@@ -159,13 +161,14 @@ export default class App extends React.Component {
                     region={this.state.region}
                     onRegionChange={this.onRegionChange}
                     showsUserLocation = {true}>
-                    {this.state.markers.map(marker => (
                       <MapView.Marker
-                        coordinate={marker.coordinate}
-                        title={marker.title}
-                        description={marker.description}
+                        coordinate={{
+                            latitude: this.state.dest.lat,
+                            longitude: this.state.dest.long,
+                        }}
+                        title={this.state.dest.name}
+                        description={this.state.dest.name}
                       />
-                    ))}
                 </MapView>
                 <View style={styles.top}>
                     <Text style={styles.title}>{this.state.title}</Text>

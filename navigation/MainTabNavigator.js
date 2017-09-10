@@ -12,17 +12,11 @@ import MapScreen from '../screens/MapScreen';
 
 export default TabNavigator(
   {
-    Home: {
-      screen: HomeScreen,
-    },
-    Links: {
-      screen: LinksScreen,
+    Maps: {
+      screen: MapScreen,
     },
     Settings: {
       screen: SettingsScreen,
-    },
-    Maps: {
-      screen: MapScreen,
     },
   },
   {
@@ -31,20 +25,10 @@ export default TabNavigator(
         const { routeName } = navigation.state;
         let iconName;
         switch (routeName) {
-          case 'Home':
-            iconName = Platform.OS === 'ios'
-              ? `ios-information-circle${focused ? '' : '-outline'}`
-              : 'md-information-circle';
-            break;
-          case 'Links':
-            iconName = Platform.OS === 'ios'
-              ? `ios-link${focused ? '' : '-outline'}`
-              : 'md-link';
-            break;
           case 'Maps':
             iconName = Platform.OS === 'ios'
-              ? `ios-link${focused ? '' : '-outline'}`
-              : 'md-link';
+              ? `ios-home${focused ? '' : '-outline'}`
+              : 'md-home';
             break;
           case 'Settings':
             iconName = Platform.OS === 'ios'

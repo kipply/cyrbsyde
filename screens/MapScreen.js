@@ -195,9 +195,9 @@ export default class App extends React.Component {
                   >
                  <View style={{marginTop: 22}}>
                   <View>
-                    <Text style={styles.title}>Best Routes</Text>
+                    <Text style={styles.title}>Best Route</Text>
                     <Text>
-                        {JSON.stringify(this.state.methods)}
+                        Walking Time: {this.state.best_method.walking}
                     </Text>
                     <Button
                     onPress={() => {

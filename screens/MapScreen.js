@@ -111,23 +111,12 @@ export default class App extends React.Component {
 
       getDirections(startLat, startLong, endLat, endLong){
           this.getDirectionOptions(startLat, startLong, endLat, endLong, (err, result) => {
-              var data = JSON.parse(result.text)
+              data = JSON.parse(result.text)
               if (data){
                   this.state.methods = data;
-                  console.log(this.state.methods)
               }
+              this.setState({methods: data})
           });
-          var min = this.state.methods[0]
-          for(var i = 1; i < this.state.methods.length;  i++){
-              if (this.state.methods[i].lyft_data.display_name == "The requested location is not inside a Lyft service area"){
-                  this.state.methods.pop(i)
-                  continue;
-              }
-              if ((this.state.methods[i].lyft_data.cost_max + this.state.methods[i].lyft_data.cost_min) / 2 < min){
-                  min = this.state.methods[i]
-              }
-          }
-          this.state.best_method = min
       };
   search(e, destination, lat, long){
         this.getData(destination, lat, long);
@@ -161,14 +150,22 @@ export default class App extends React.Component {
                     region={this.state.region}
                     onRegionChange={this.onRegionChange}
                     showsUserLocation = {true}>
-                      <MapView.Marker
-                        coordinate={{
-                            latitude: this.state.dest.lat,
-                            longitude: this.state.dest.long,
-                        }}
-                        title={this.state.dest.name}
-                        description={this.state.dest.name}
-                      />
+                    <MapView.Marker
+                      coordinate={{
+                          latitude: this.state.dest.lat,
+                          longitude: this.state.dest.long,
+                      }}
+                      title={this.state.dest.name}
+                      description={this.state.dest.name}
+                    />
+                    <MapView.Marker
+                       coordinate={{
+                           latitude: this.state.methods[-1].spot.spot_lat,
+                           longitude: this.state.methods[-1].spot.spot_long,
+                       }}
+                       title={this.state.dest.name}
+                       description={this.state.dest.name}
+                     />
                 </MapView>
                 <View style={styles.top}>
                     <Text style={styles.title}>{this.state.title}</Text>
@@ -203,7 +200,6 @@ export default class App extends React.Component {
                     <Text style={styles.title}>Best Route</Text>
                     <Text>
                     {JSON.stringify(this.state.best_method)}
-                        Walking Time: {this.state.best_method}
                     </Text>
                     <Button
                     onPress={() => {

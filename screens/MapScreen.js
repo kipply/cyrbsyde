@@ -6,10 +6,9 @@ import {
     Permissions,
     MapView
 } from 'expo';
-import { View, StyleSheet, Text, Image, TextInput, FlatList, Button } from 'react-native';
+import { View, StyleSheet, Text, Image, TextInput, FlatList, Button, TouchableHighlight, Modal, TouchableOpacity } from 'react-native';
 import LocationOptions from "../components/locationOptions";
 import request from "superagent";
-import Overlay from 'react-native-modal-overlay';
 
 
 const GEOLOCATION_OPTIONS = {
@@ -43,18 +42,32 @@ export default class App extends React.Component {
         };
     }
 
-      showOverlay() {
-        this.setState({modalVisible: true})
+      _renderButton = (text, onPress) => (
+        <TouchableOpacity onPress={onPress}>
+          <View style={styles.button}>
+            <Text>{text}</Text>
+          </View>
+        </TouchableOpacity>
+      );
+
+      _renderModalContent = () => (
+        <View style={styles.modalContent}>
+          <Text>Hello!</Text>
+          {this._renderButton('Close', () => this.setState({ visibleModal: null }))}
+        </View>
+      );
+
+
+      setModalVisible(visible) {
+        this.setState({modalVisible: visible});
       }
 
-      hideOverlay() {
-        this.setState({modalVisible: false})
-      }
     componentWillMount() {
+            this.setModalVisible(false)
+
         this.getLocationAsync();
         Expo.Location.watchPositionAsync(GEOLOCATION_OPTIONS, this.locationChanged);
     }
-
       updateDestination(destination){
           this.setState({destination: destination});
       }
@@ -89,15 +102,14 @@ export default class App extends React.Component {
   }
   // http://ec2-35-182-16-224.ca-central-1.compute.amazonaws.com/api/getDirections?origin=51.5033640,-0.1276250&destination=51.5033641,-0.1276250&mode=transit
       getDirectionOptions(startLat, startLong, endLat, endLong, callback) {
-        request.get("http://ec2-35-182-16-224.ca-central-1.compute.amazonaws.com/api/getDirections?origin=" + startLat + "," + startLong + "&destination=" + endLat + "," + endLong + "&mode=transit").end(callback);
+        request.get("http://ec2-35-182-16-224.ca-central-1.compute.amazonaws.com/api/getCombinedData?lat=" + startLat + "&lon=" + startLong + "&dest_lat=" + endLat + "&dest_lon=" + endLong).end(callback);
     };
 
       getDirections(startLat, startLong, endLat, endLong){
           this.getDirectionOptions(startLat, startLong, endLat, endLong, (err, result) => {
               var data = JSON.parse(result.text)
-              console.log(data); 
               if (data){
-                  this.state.suggestions = data;
+                  this.state.methods = data;
               }
               this.setState({methods: data})
           });
@@ -110,15 +122,15 @@ export default class App extends React.Component {
       this.state.dest.lat = item.coords.lat;
       this.state.dest.long = item.coords.lng;
       this.getDirections(this.state.location.coords.latitude, this.state.location.coords.longitude, this.state.dest.lat ,this.state.dest.long)
-      this.showOverlay();
+      this.setModalVisible(true);
   }
 
     locationChanged = (location) => {
         region = {
                 latitude: location.coords.latitude,
                 longitude: location.coords.longitude,
-                latitudeDelta: 0.1,
-                longitudeDelta: 0.05,
+                latitudeDelta: 0.01,
+                longitudeDelta: 0.01,
             },
             this.setState({
                 location,
@@ -144,8 +156,8 @@ export default class App extends React.Component {
                 <View style={styles.top}>
                     <Text style={styles.title}>{this.state.title}</Text>
                     <TextInput
-                        style={{height: 40, backgroundColor: '#fff', padding: 5}}
-                      placeholder="Type in your destination!"
+                      style={{height: 40, backgroundColor: '#fff', padding: 5}}
+                      placeholder="Where are you headed?"
                       onChangeText={(text) => this.updateDestination(text)}
                       value={this.state.destination}
                     />
@@ -163,15 +175,27 @@ export default class App extends React.Component {
                       />
                     </View>
                 </View>
-                <Overlay visible={this.state.modalVisible} closeOnTouchOutside animationType="fade"
-    containerStyle={{backgroundColor: 'rgba(37, 8, 10, 0.78)'}} childrenWrapperStyle={{backgroundColor: '#eee'}} >
-  <Text style={{fontWeight:'300', fontSize: 20}}>Best Routes</Text>
-  <View style={{borderBottomWidth: 1, width: 100, paddingTop: 10}}></View>
-  <Text style={{fontWeight:'300', fontSize: 16, paddingTop: 20, textAlign:'center'}}>
+                <Modal
+                  animationType="slide"
+                  transparent={false}
+                  visible={this.state.modalVisible}
+                  onRequestClose={() => {alert("Modal has been closed.")}}
+                  >
+                 <View style={{marginTop: 22}}>
+                  <View>
+                    <Text>Hello World!</Text>
 
-</Text>
-</Overlay>
-                </View>
+                    <TouchableHighlight onPress={() => {
+                      this.setModalVisible(!this.state.modalVisible)
+                    }}>
+                      <Text>Hide Modal</Text>
+                    </TouchableHighlight>
+
+                  </View>
+                 </View>
+                </Modal>
+</View>
+
             );
         } else{
             <View style={styles.container}>
@@ -185,7 +209,7 @@ export default class App extends React.Component {
                 <Text style={styles.title}>{this.state.title}</Text>
                 <TextInput
                   style={{height: 40, backgroundColor: '#fff', padding: 5}}
-                  placeholder="Type in your destination!"
+                  placeholder="Where are you headed?"
                   onChangeText={(text) => this.updateDestination(text)}
                   value={this.state.destination}
                 />
@@ -230,5 +254,18 @@ map: {
     item: {
         borderWidth: 1,
         borderColor: '#d6d7da',
-    }
+    },
+
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 22,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  bottomModal: {
+    justifyContent: 'flex-end',
+    margin: 0,
+  },
 });

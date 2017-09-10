@@ -9,6 +9,7 @@ import {
 import { View, StyleSheet, Text, Image, TextInput, FlatList, Button } from 'react-native';
 import LocationOptions from "../components/locationOptions";
 import request from "superagent";
+import Overlay from 'react-native-modal-overlay';
 
 
 const GEOLOCATION_OPTIONS = {
@@ -31,14 +32,24 @@ export default class App extends React.Component {
                     longitude: 0
                 }
             },
+            markers: [],
             destination : '',
             dest: {
                 lat: 0,
                 long: 0
-            }
+            },
+            methods: [],
+            modalVisible: false
         };
     }
 
+      showOverlay() {
+        this.setState({modalVisible: true})
+      }
+
+      hideOverlay() {
+        this.setState({modalVisible: false})
+      }
     componentWillMount() {
         this.getLocationAsync();
         Expo.Location.watchPositionAsync(GEOLOCATION_OPTIONS, this.locationChanged);
@@ -68,7 +79,6 @@ export default class App extends React.Component {
     }
 
     getData(text, latitude, longitude){
-      console.log("About to make call");
       this.getAutocomplete(text, latitude, longitude, (err, result) => {
           data = JSON.parse(result.text)
        if (data){
@@ -76,9 +86,31 @@ export default class App extends React.Component {
        }
        this.setState({suggestions: data})
       });
- };
+  }
+  // http://ec2-35-182-16-224.ca-central-1.compute.amazonaws.com/api/getDirections?origin=51.5033640,-0.1276250&destination=51.5033641,-0.1276250&mode=transit
+      getDirectionOptions(startLat, startLong, endLat, endLong, callback) {
+        request.get("http://ec2-35-182-16-224.ca-central-1.compute.amazonaws.com/api/getDirections?origin=" + startLat + "," + startLong + "&destination=" + endLat + "," + endLong + "&mode=transit").end(callback);
+    };
+
+      getDirections(startLat, startLong, endLat, endLong){
+          this.getDirectionOptions(startLat, startLong, endLat, endLong, (err, result) => {
+              var data = JSON.parse(result.text)
+              console.log(data); 
+              if (data){
+                  this.state.suggestions = data;
+              }
+              this.setState({methods: data})
+          });
+      };
   search(e, destination, lat, long){
         this.getData(destination, lat, long);
+  };
+  select(item){
+      this.updateDestination(item.address);
+      this.state.dest.lat = item.coords.lat;
+      this.state.dest.long = item.coords.lng;
+      this.getDirections(this.state.location.coords.latitude, this.state.location.coords.longitude, this.state.dest.lat ,this.state.dest.long)
+      this.showOverlay();
   }
 
     locationChanged = (location) => {
@@ -101,12 +133,18 @@ export default class App extends React.Component {
                     region={this.state.region}
                     onRegionChange={this.onRegionChange}
                     showsUserLocation = {true}>
-
+                    {this.state.markers.map(marker => (
+                      <MapView.Marker
+                        coordinate={marker.coordinate}
+                        title={marker.title}
+                        description={marker.description}
+                      />
+                    ))}
                 </MapView>
                 <View style={styles.top}>
                     <Text style={styles.title}>{this.state.title}</Text>
                     <TextInput
-                      style={{height: 40, backgroundColor: '#fff', padding: 5}}
+                        style={{height: 40, backgroundColor: '#fff', padding: 5}}
                       placeholder="Type in your destination!"
                       onChangeText={(text) => this.updateDestination(text)}
                       value={this.state.destination}
@@ -114,7 +152,7 @@ export default class App extends React.Component {
                     <View>
                     <FlatList
                       data={this.state.suggestions}
-                      renderItem={({item}) => <Text style={styles.item} onPress={(text) => this.updateDestination(item.address)}>{ item.address }</Text>}
+                      renderItem={({item}) => <Text style={styles.item} onPress={(text) => this.select(item)}>{ item.address }</Text>}
                        style={styles.select}
                     />
                     <Button
@@ -125,6 +163,14 @@ export default class App extends React.Component {
                       />
                     </View>
                 </View>
+                <Overlay visible={this.state.modalVisible} closeOnTouchOutside animationType="fade"
+    containerStyle={{backgroundColor: 'rgba(37, 8, 10, 0.78)'}} childrenWrapperStyle={{backgroundColor: '#eee'}} >
+  <Text style={{fontWeight:'300', fontSize: 20}}>Best Routes</Text>
+  <View style={{borderBottomWidth: 1, width: 100, paddingTop: 10}}></View>
+  <Text style={{fontWeight:'300', fontSize: 16, paddingTop: 20, textAlign:'center'}}>
+
+</Text>
+</Overlay>
                 </View>
             );
         } else{
